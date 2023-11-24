@@ -65,6 +65,12 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
+userSchema.methods.toJSON = function(){
+  const userData = this.toObject();
+  delete userData.password;
+  return userData;
+}
+
 
 const UserModel = model<userInterface>('User', userSchema)
 
