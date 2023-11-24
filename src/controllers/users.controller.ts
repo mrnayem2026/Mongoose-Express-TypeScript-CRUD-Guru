@@ -67,11 +67,11 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 }
 
-const updateUserData=async(req:Request,res:Response)=>{
+const updateUserData = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId;
-    const userData = req.body;
-    const result = await userService.updateUserData(userId,userData)
+    const userId = req.params.userId
+    const userData = req.body
+    const result = await userService.updateUserData(userId, userData)
     res.status(200).json({
       success: true,
       message: 'User updated successfully!',
@@ -86,10 +86,29 @@ const updateUserData=async(req:Request,res:Response)=>{
   }
 }
 
+const deleteUserData = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId
+    // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+    const result = await userService.deleteUserData(userId)
+    res.status(200).json({
+      success: true,
+      message: 'User deleted successfully!',
+      data: null,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went worng! from deleteUserData',
+      error: error,
+    })
+  }
+}
 
 export const userContoler = {
   creatUser,
   getAllUsers,
   getSingleUser,
-  updateUserData
+  updateUserData,
+  deleteUserData
 }

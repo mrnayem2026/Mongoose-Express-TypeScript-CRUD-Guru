@@ -48,9 +48,20 @@ const updateUserData = async (
     throw error
   }
 }
+
+
+// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not.
+const deleteUserData = async(userId:string)=>{
+  const deletedData = await UserModel.findByIdAndDelete(userId);
+  return deletedData;
+}
+
+
+
 export const userService = {
   creatUser,
   getAllUsers,
   getSingleUser,
   updateUserData,
+  deleteUserData
 }
