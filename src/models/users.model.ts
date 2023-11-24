@@ -1,9 +1,12 @@
 import { Schema, model } from 'mongoose'
 import bycrpt from 'bcrypt'
-import userInterface from '../interfaces/users.interface'
 import config from '../config'
+import {
+  userInterface,
+  userInterfaceModel,
+} from '../interfaces/users.interface'
 
-const userSchema = new Schema<userInterface>({
+const userSchema = new Schema<userInterface, userInterfaceModel>({
   userId: {
     type: Number,
     unique: true,
@@ -65,13 +68,17 @@ userSchema.pre('save', async function (next) {
   next()
 })
 
-userSchema.methods.toJSON = function(){
-  const userData = this.toObject();
-  delete userData.password;
-  return userData;
+userSchema.methods.toJSON = function () {
+  const userData = this.toObject()
+  delete userData.password
+  return userData
 }
 
+userSchema.statics.isUserExist = async function (id: string) {
+  const existingUser = await UserModel.findOne({ id })
+  return existingUser
+}
 
-const UserModel = model<userInterface>('User', userSchema)
+const UserModel = model<userInterface, userInterfaceModel>('User', userSchema)
 
 export default UserModel

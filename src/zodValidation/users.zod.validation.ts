@@ -41,4 +41,4 @@ const userZodSchema = z.object({
   }),
 })
 
-export default userZodSchema;
+export default userZodSchema
