@@ -1,5 +1,8 @@
+/* eslint-disable no-useless-catch */
+import config from '../config'
 import { userInterface } from '../interfaces/users.interface'
 import UserModel from '../models/users.model'
+import bycrpt from 'bcrypt'
 
 // This below function work for create user and store data in mongodb.
 const creatUser = async (userData: userInterface) => {
@@ -20,20 +23,31 @@ const getSingleUser = async (userID: string): Promise<userInterface | null> => {
   return result
 }
 
+// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not.
 // this below function update user data
-
 const updateUserData = async (
   userId: string,
   userData: userInterface,
 ): Promise<userInterface | null> => {
-  const result = await UserModel.findByIdAndUpdate(userId, userData, {
-    new: true,
-    runValidators: true,
-  })
+  try {
+    const { password } = userData
 
-  return result
+    if (password) {
+      userData.password = await bycrpt.hash(
+        userData.password,
+        Number(config.salt_round),
+      )
+    }
+
+    const result = await UserModel.findByIdAndUpdate(userId, userData, {
+      new: true,
+      runValidators: true,
+    })
+    return result
+  } catch (error) {
+    throw error
+  }
 }
-
 export const userService = {
   creatUser,
   getAllUsers,

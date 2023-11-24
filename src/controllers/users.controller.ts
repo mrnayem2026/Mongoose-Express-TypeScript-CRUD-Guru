@@ -67,8 +67,29 @@ const getSingleUser = async (req: Request, res: Response) => {
   }
 }
 
+const updateUserData=async(req:Request,res:Response)=>{
+  try {
+    const userId = req.params.userId;
+    const userData = req.body;
+    const result = await userService.updateUserData(userId,userData)
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully!',
+      data: result,
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went worng! from get single user',
+      error: error,
+    })
+  }
+}
+
+
 export const userContoler = {
   creatUser,
   getAllUsers,
   getSingleUser,
+  updateUserData
 }

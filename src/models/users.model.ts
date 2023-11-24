@@ -64,6 +64,7 @@ const userSchema = new Schema<userInterface, userInterfaceModel>({
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this
+
   user.password = await bycrpt.hash(user.password, Number(config.salt_round))
   next()
 })
