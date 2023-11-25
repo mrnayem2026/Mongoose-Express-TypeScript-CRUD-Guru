@@ -52,7 +52,7 @@ const updateUserData = async (
 }
 
 // TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not.
-const deleteUserData = async (userId: string) => {  
+const deleteUserData = async (userId: string) => {
   const deletedData = await UserModel.findByIdAndDelete(userId)
   return deletedData
 }
@@ -64,7 +64,7 @@ const addProductsInUserDB = async (
   productData: Partial<TUserInterface>,
 ) => {
   const UserExist = await UserModel.findById(Userid)
-  
+
   if (!UserExist) {
     return null
   }
@@ -85,12 +85,26 @@ const addProductsInUserDB = async (
 
 // Get all orders for a specific user
 // TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not
-const retrieveAllOrders = async (userId : string) => {
-    const userExist = await UserModel.findById(userId);   
-    return userExist?.orders || null;
-};
+const retrieveAllOrders = async (userId: string) => {
+  const userExistOrders = await UserModel.findById(userId)
+  return userExistOrders?.orders || null
+}
 
+// Get All order price for a specific user
+// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not
 
+const calculateAllOrdersPrice = async (userId: string) => {
+  const userExistOrders = await UserModel.findById(userId)
+  const ordersOfUser = userExistOrders?.orders || []
+
+  let totalPrice = 0
+
+  ordersOfUser.forEach((order) => {
+    const allTotalPric = order.price * order.quantity
+    totalPrice += allTotalPric
+  })
+  return totalPrice;
+}
 
 export const userService = {
   creatUser,
@@ -99,5 +113,6 @@ export const userService = {
   updateUserData,
   deleteUserData,
   addProductsInUserDB,
-  retrieveAllOrders
+  retrieveAllOrders,
+  calculateAllOrdersPrice,
 }

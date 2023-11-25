@@ -10,5 +10,6 @@ route.put('/:userId',userContoler.updateUserData)
 route.delete('/:userId',userContoler.deleteUserData)
 route.put("/:userId/orders", userContoler.addProductsInUserDB); 
 route.get("/:userId/orders", userContoler.retrieveAllOrders); 
+route.get("/:userId/orders/total-price", userContoler.calculateAllOrdersPrice); 
 
 export const userRoute = route

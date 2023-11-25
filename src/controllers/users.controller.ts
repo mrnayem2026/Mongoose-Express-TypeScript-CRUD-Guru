@@ -4,7 +4,6 @@ import { userService } from '../services/users.service'
 import { ZodError } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
-
 const creatUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body
@@ -60,11 +59,10 @@ const getSingleUser = async (req: Request, res: Response) => {
       data: result,
     })
   } catch (error) {
-
     res.status(500).json({
       success: false,
       message: 'Something went worng!',
-      error: error
+      error: error,
     })
   }
 }
@@ -107,27 +105,28 @@ const deleteUserData = async (req: Request, res: Response) => {
   }
 }
 
-const addProductsInUserDB = async(req:Request,res:Response)=>{
+const addProductsInUserDB = async (req: Request, res: Response) => {
   try {
-    const Userid: string = req.params.userId;
-    const userAddProductData = req.body;
-    
+    const Userid: string = req.params.userId
+    const userAddProductData = req.body
 
-    const result = await userService.addProductsInUserDB(Userid,userAddProductData)
-    
+    const result = await userService.addProductsInUserDB(
+      Userid,
+      userAddProductData,
+    )
+
     if (result) {
       res.status(200).json({
         success: true,
-        message: "Order created successfully!",
+        message: 'Order created successfully!',
         data: null,
-      });
+      })
     } else {
       res.status(404).json({
         success: false,
-        message: "User not found or update failed",
-      });
+        message: 'User not found or update failed',
+      })
     }
-
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -137,16 +136,36 @@ const addProductsInUserDB = async(req:Request,res:Response)=>{
   }
 }
 
-const retrieveAllOrders=async(req:Request,res:Response)=>{
-  const Userid: string = req.params.userId;
+const retrieveAllOrders = async (req: Request, res: Response) => {
+  const Userid: string = req.params.userId
 
   const result = await userService.retrieveAllOrders(Userid)
   res.status(200).json({
     success: true,
-    message: " I am from Retrieve All Orders",
+    message: ' I am from Retrieve All Orders',
     data: result,
-  });
-  
+  })
+}
+
+const calculateAllOrdersPrice = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId
+    const result = await userService.calculateAllOrdersPrice(userId)
+
+    res.status(200).json({
+      success: true,
+      message: 'Total price calculated successfully!',
+      data: {
+        totalPrice: result,
+      },
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went worng! from calculateAllOrdersPrice',
+      error: error,
+    })
+  }
 }
 
 export const userContoler = {
@@ -156,5 +175,6 @@ export const userContoler = {
   updateUserData,
   deleteUserData,
   addProductsInUserDB,
-  retrieveAllOrders
+  retrieveAllOrders,
+  calculateAllOrdersPrice
 }
