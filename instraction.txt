@@ -252,7 +252,7 @@ Use either `instanceof` or `static` method to display this error message.
 }
 ```
 
-### 2. Retrieve all orders for a specific user ❌
+### 2. Retrieve all orders for a specific user ✔️
 
 - Endpoint: **GET /api/users/:userId/orders**
 
@@ -283,7 +283,7 @@ if the user exist or not.  (Use the [format for error messages](#sample-error-re
 ```
 
 ### 3. 
-**Calculate Total Price of Orders for a Specific User** ❌
+**Calculate Total Price of Orders for a Specific User** ✔️
 
 - Endpoint: **GET /api/users/:userId/orders/total-price**
 - Response: Total price of all orders for the specified user or, 

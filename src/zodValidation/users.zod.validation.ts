@@ -39,6 +39,21 @@ const userZodSchema = z.object({
     city: z.string().min(1, 'City is required'),
     country: z.string().min(1, 'Country is required'),
   }),
+  orders: z
+    .array(
+      z.object({
+        productName: z.string().refine((value) => value.trim().length > 0, {
+          message: 'Product name is required',
+        }),
+        price: z.number().positive({
+          message: 'Price must be a positive number',
+        }),
+        quantity: z.number().int().positive({
+          message: 'Quantity must be a positive integer',
+        }),
+      }),
+    )
+    .optional(),
 })
 
 export default userZodSchema

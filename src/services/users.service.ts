@@ -16,16 +16,18 @@ const getAllUsers = async (): Promise<TUserInterface[]> => {
   return result
 }
 
-// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not.
 // This function return single user
 const getSingleUser = async (
   userID: string,
 ): Promise<TUserInterface | null> => {
-  const result = await UserModel.findById(userID,'userId username fullName age email isActive hobbies address')
+  const result = await UserModel.findById(
+    userID,
+    'userId username fullName age email isActive hobbies address',
+  )
   return result
 }
 
-// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not.
+
 // this below function update user data
 const updateUserData = async (
   userId: string,
@@ -51,13 +53,13 @@ const updateUserData = async (
   }
 }
 
-// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not.
+
 const deleteUserData = async (userId: string) => {
   const deletedData = await UserModel.findByIdAndDelete(userId)
   return deletedData
 }
 
-// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not.
+
 // Add product in Oredes array
 const addProductsInUserDB = async (
   Userid: string,
@@ -84,15 +86,12 @@ const addProductsInUserDB = async (
 }
 
 // Get all orders for a specific user
-// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not
 const retrieveAllOrders = async (userId: string) => {
   const userExistOrders = await UserModel.findById(userId)
   return userExistOrders?.orders || null
 }
 
 // Get All order price for a specific user
-// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not
-
 const calculateAllOrdersPrice = async (userId: string) => {
   const userExistOrders = await UserModel.findById(userId)
   const ordersOfUser = userExistOrders?.orders || []
@@ -103,7 +102,7 @@ const calculateAllOrdersPrice = async (userId: string) => {
     const allTotalPric = order.price * order.quantity
     totalPrice += allTotalPric
   })
-  return totalPrice;
+  return totalPrice
 }
 
 export const userService = {

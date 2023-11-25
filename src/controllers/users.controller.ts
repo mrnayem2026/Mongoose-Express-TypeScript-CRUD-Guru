@@ -4,6 +4,8 @@ import { userService } from '../services/users.service'
 import { ZodError } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
+
+
 const creatUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body
@@ -27,7 +29,7 @@ const creatUser = async (req: Request, res: Response) => {
       res.status(500).json({
         success: false,
         message: 'Something went worng!',
-        error: error,
+        error: (error as Error).message,
       })
     }
   }
@@ -45,7 +47,7 @@ const getAllUsers = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went worng!',
-      error: error,
+      error: (error as Error).message,
     })
   }
 }
@@ -62,7 +64,7 @@ const getSingleUser = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went worng!',
-      error: error,
+      error: (error as Error).message,
     })
   }
 }
@@ -71,7 +73,8 @@ const updateUserData = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId
     const userData = req.body
-    const result = await userService.updateUserData(userId, userData)
+    const zodParsedData = await userZodSchema.parseAsync(userData)
+    const result = await userService.updateUserData(userId, zodParsedData)
 
     const ResponsformattedUser = {
       userId: result?.userId,
@@ -93,7 +96,7 @@ const updateUserData = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went worng! from get single user',
-      error: error,
+      error: (error as Error).message,
     })
   }
 }
@@ -112,7 +115,7 @@ const deleteUserData = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went worng! from deleteUserData',
-      error: error,
+      error: (error as Error).message,
     })
   }
 }
@@ -139,33 +142,33 @@ const addProductsInUserDB = async (req: Request, res: Response) => {
         message: 'User not found or update failed',
       })
     }
-  } catch (err) {
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: 'Something went worng! from addProductsInUserDB',
-      error: err,
+      error: (error as Error).message,
     })
   }
 }
 
 const retrieveAllOrders = async (req: Request, res: Response) => {
- try {
-  const Userid: string = req.params.userId
-  const result = await userService.retrieveAllOrders(Userid)
-  res.status(200).json({
-    success: true,
-    message: 'Order fetched successfully!',
-    data: {
-      oreders: result,
-    },
-  })
- } catch (error) {
-  res.status(500).json({
-    success: false,
-    message: 'Something went worng! from retrieveAllOrders',
-    error: error,
-  })
- }
+  try {
+    const Userid: string = req.params.userId
+    const result = await userService.retrieveAllOrders(Userid)
+    res.status(200).json({
+      success: true,
+      message: 'Order fetched successfully!',
+      data: {
+        oreders: result,
+      },
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Something went worng! from retrieveAllOrders',
+      error: (error as Error).message,
+    })
+  }
 }
 
 const calculateAllOrdersPrice = async (req: Request, res: Response) => {
@@ -184,7 +187,7 @@ const calculateAllOrdersPrice = async (req: Request, res: Response) => {
     res.status(500).json({
       success: false,
       message: 'Something went worng! from calculateAllOrdersPrice',
-      error: error,
+      error: (error as Error).message,
     })
   }
 }

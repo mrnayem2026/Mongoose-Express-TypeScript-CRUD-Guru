@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+import { Model } from "mongoose"
+
 interface TUserInterface {
   userId: number
   username: string
@@ -20,4 +23,11 @@ interface TUserInterface {
     | undefined
 }
 
-export { TUserInterface }
+
+interface UserInterFaceModel extends Model<TUserInterface>{
+  isUserExist(id:string): Promise<TUserInterface | null>
+}
+
+
+
+export { TUserInterface,UserInterFaceModel }

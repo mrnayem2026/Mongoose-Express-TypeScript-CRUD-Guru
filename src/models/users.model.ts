@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose'
 import bycrpt from 'bcrypt'
 import config from '../config'
-import { TUserInterface } from '../interfaces/users.interface'
+import { TUserInterface, UserInterFaceModel } from '../interfaces/users.interface'
 
-const userSchema = new Schema<TUserInterface>({
+const userSchema = new Schema<TUserInterface,UserInterFaceModel>({
   userId: {
     type: Number,
     unique: true,
@@ -78,6 +78,10 @@ userSchema.methods.toJSON = function () {
   return userData
 }
 
-const UserModel = model<TUserInterface>('User', userSchema)
+userSchema.statics.isUserExist = async function(userId : string)  {
+  const existUser = await UserModel.findById(userId)
+  return existUser
+}
+const UserModel = model<TUserInterface,UserInterFaceModel>('User', userSchema)
 
 export default UserModel
