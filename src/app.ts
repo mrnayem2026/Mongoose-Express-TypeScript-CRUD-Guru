@@ -10,10 +10,7 @@ app.use(cors())
 
 // application route
 app.use('/api/users', userRoute)
-app.use('/api/users', userRoute)
-app.use('/api/users/:userId', userRoute)
-app.use('/api/users/:userId', userRoute)
-app.use('/api/users/:userId', userRoute)
+
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello Nayem! Welcome to Mongoose-Express-TypeScript-CRUD-Guru')

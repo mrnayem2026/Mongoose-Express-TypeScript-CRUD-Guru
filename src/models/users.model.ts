@@ -1,12 +1,9 @@
 import { Schema, model } from 'mongoose'
 import bycrpt from 'bcrypt'
 import config from '../config'
-import {
-  userInterface,
-  userInterfaceModel,
-} from '../interfaces/users.interface'
+import { TUserInterface } from '../interfaces/users.interface'
 
-const userSchema = new Schema<userInterface, userInterfaceModel>({
+const userSchema = new Schema<TUserInterface>({
   userId: {
     type: Number,
     unique: true,
@@ -58,13 +55,19 @@ const userSchema = new Schema<userInterface, userInterfaceModel>({
       required: [true, 'Country is required'],
     },
   },
+  orders: [
+    {
+      productName: { type: String, required: true },
+      price: { type: Number, required: true },
+      quantity: { type: Number, required: true },
+    },
+  ],
 })
 
 // pre save middleware / hook
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this
-
   user.password = await bycrpt.hash(user.password, Number(config.salt_round))
   next()
 })
@@ -75,11 +78,6 @@ userSchema.methods.toJSON = function () {
   return userData
 }
 
-userSchema.statics.isUserExist = async function (id: string) {
-  const existingUser = await UserModel.findOne({ id })
-  return existingUser
-}
-
-const UserModel = model<userInterface, userInterfaceModel>('User', userSchema)
+const UserModel = model<TUserInterface>('User', userSchema)
 
 export default UserModel

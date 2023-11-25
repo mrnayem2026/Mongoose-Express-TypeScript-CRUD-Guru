@@ -11,6 +11,8 @@
     "prettier": "prettier --ignore-path .gitignore --write \"./src/**/*.+(js|ts|json)\"",
     "prettier:fix": "npx prettier --write src",
     "build": "tsc",
+    "vercel": "vercel",
+    "vercel:prod": "vercel --prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

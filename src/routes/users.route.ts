@@ -6,7 +6,8 @@ const route = express.Router()
 route.post('/create-user', userContoler.creatUser)
 route.get('/all-users', userContoler.getAllUsers)
 route.get('/:userId', userContoler.getSingleUser)
-route.patch('/:userId',userContoler.updateUserData)
+route.put('/:userId',userContoler.updateUserData)
 route.delete('/:userId',userContoler.deleteUserData)
+route.put("/:userId/orders", userContoler.addProductsInUserDB); 
 
 export const userRoute = route

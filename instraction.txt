@@ -166,7 +166,7 @@ if the user exist or not. (Use the [format for error messages](#sample-error-res
 
 ### 4. Update user information
 
-- Endpoint: **PUT /api/users/:userId** ❌
+- Endpoint: **PUT /api/users/:userId** ✔️
 
 - Request Body: Updated user data (similar structure as in user creation).
 
@@ -203,7 +203,7 @@ If you can't find information about the user, show a clear message. Use either `
 
 ### 5. Delete a user
 
-- Endpoint: **DELETE /api/users/:userId**❌
+- Endpoint: **DELETE /api/users/:userId**✔️
 
 - Response: Success message or,  If you can't find information about the user, ❌
 show a clear message. Use either `instance` or `static` method to determine if the user exist or not.  
@@ -223,11 +223,16 @@ show a clear message. Use either `instance` or `static` method to determine if t
 
 1. Add New Product in Order ❌
 
-If the 'orders' property already exists for a user, append a new product to it. Otherwise, create an 'orders' array within the user object and then add the order data.
+If the 'orders' property already exists for a user, 
+append a new product to it. 
+Otherwise, create an 'orders' array within the user object and then add the order data.
 
 - Endpoint: **PUT /api/users/:userId/orders**
 
-- Request Body: If you can't find information about the user, show a clear message. Use either `instanceof` or `static` method to display this error message.  (Use the [format for error messages](#sample-error-response) that is given below.)
+- Request Body: 
+If you can't find information about the user, show a clear message. 
+Use either `instanceof` or `static` method to display this error message.  
+(Use the [format for error messages](#sample-error-response) that is given below.) ❌
 
 ```json
 {
@@ -253,7 +258,7 @@ If the 'orders' property already exists for a user, append a new product to it. 
 
 - Response: List of order objects for the specified user or, 
 If you can't find information about the user, show a clear message. Use either `instance` or `static` method to determine 
-if the user exist or not.  (Use the [format for error messages](#sample-error-response) that is given below.)
+if the user exist or not.  (Use the [format for error messages](#sample-error-response) that is given below.) ❌
 
 
 ```json
@@ -283,7 +288,7 @@ if the user exist or not.  (Use the [format for error messages](#sample-error-re
 - Endpoint: **GET /api/users/:userId/orders/total-price**
 - Response: Total price of all orders for the specified user or, 
 If you can't find information about the user, show a clear message. 
-Use either `instance` or `static` method to determine if the user exist or not (Use the [format for error messages](#sample-error-response) that is given below.)
+Use either `instance` or `static` method to determine if the user exist or not (Use the [format for error messages](#sample-error-response) that is given below.) ❌
 
 ```json
 {

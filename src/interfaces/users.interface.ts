@@ -1,6 +1,4 @@
-import { Model } from 'mongoose'
-
-export interface userInterface {
+interface TUserInterface {
   userId: number
   username: string
   password: string
@@ -17,9 +15,9 @@ export interface userInterface {
     city: string
     country: string
   }
+  orders?:
+    | Array<{ productName: string; price: number; quantity: number }>
+    | undefined
 }
 
-export interface userInterfaceModel extends Model<userInterface> {
-  // eslint-disable-next-line no-unused-vars
-  isUserExist(id: string): Promise<userInterface | null>
-}
+export { TUserInterface }
