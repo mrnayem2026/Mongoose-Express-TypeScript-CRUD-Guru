@@ -137,11 +137,24 @@ const addProductsInUserDB = async(req:Request,res:Response)=>{
   }
 }
 
+const retrieveAllOrders=async(req:Request,res:Response)=>{
+  const Userid: string = req.params.userId;
+
+  const result = await userService.retrieveAllOrders(Userid)
+  res.status(200).json({
+    success: true,
+    message: " I am from Retrieve All Orders",
+    data: result,
+  });
+  
+}
+
 export const userContoler = {
   creatUser,
   getAllUsers,
   getSingleUser,
   updateUserData,
   deleteUserData,
-  addProductsInUserDB
+  addProductsInUserDB,
+  retrieveAllOrders
 }

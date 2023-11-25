@@ -221,7 +221,7 @@ show a clear message. Use either `instance` or `static` method to determine if t
 
 ### Order Management:
 
-1. Add New Product in Order ❌
+1. Add New Product in Order ✔️
 
 If the 'orders' property already exists for a user, 
 append a new product to it. 

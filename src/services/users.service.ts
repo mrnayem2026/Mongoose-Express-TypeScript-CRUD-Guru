@@ -83,6 +83,13 @@ const addProductsInUserDB = async (
   return UpdataUserExistData
 }
 
+// Get all orders for a specific user
+// TODO: If you can't find information about the user, show a clear message. Use either instance or static method to determine if the user exist or not
+const retrieveAllOrders = async (userId : string) => {
+    const userExist = await UserModel.findById(userId);   
+    return userExist?.orders || null;
+};
+
 
 
 export const userService = {
@@ -91,5 +98,6 @@ export const userService = {
   getSingleUser,
   updateUserData,
   deleteUserData,
-  addProductsInUserDB
+  addProductsInUserDB,
+  retrieveAllOrders
 }

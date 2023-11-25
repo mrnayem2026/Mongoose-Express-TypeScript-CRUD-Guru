@@ -9,5 +9,6 @@ route.get('/:userId', userContoler.getSingleUser)
 route.put('/:userId',userContoler.updateUserData)
 route.delete('/:userId',userContoler.deleteUserData)
 route.put("/:userId/orders", userContoler.addProductsInUserDB); 
+route.get("/:userId/orders", userContoler.retrieveAllOrders); 
 
 export const userRoute = route
