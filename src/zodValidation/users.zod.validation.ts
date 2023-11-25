@@ -21,7 +21,11 @@ const userZodSchema = z.object({
     .refine(async (userName: string) => {
       const existingUserName = await UserModel.findOne({ userName })
       return !existingUserName
-    }),
+    },
+    {
+      message: 'User Name allready Exist',
+    },
+    ),
   password: z.string().min(1, 'Password is required'),
   fullName: z.object({
     firstName: z.string().min(1, 'First name is required'),
@@ -40,20 +44,20 @@ const userZodSchema = z.object({
     country: z.string().min(1, 'Country is required'),
   }),
   orders: z
-    .array(
-      z.object({
-        productName: z.string().refine((value) => value.trim().length > 0, {
-          message: 'Product name is required',
-        }),
-        price: z.number().positive({
-          message: 'Price must be a positive number',
-        }),
-        quantity: z.number().int().positive({
-          message: 'Quantity must be a positive integer',
-        }),
+  .array(
+    z.object({
+      productName: z.string().refine((value) => value.trim().length > 0, {
+        message: "Product name is required",
       }),
-    )
-    .optional(),
+      price: z.number().positive({
+        message: "Price must be a positive number",
+      }),
+      quantity: z.number().int().positive({
+        message: "Quantity must be a positive integer",
+      }),
+    })
+  )
+  .optional(),
 })
 
 export default userZodSchema

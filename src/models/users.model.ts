@@ -13,6 +13,13 @@ const userSchema = new Schema<TUserInterface,UserInterFaceModel>({
     type: String,
     unique: true,
     required: [true, 'Username is required'],
+    validate:{
+      validator: async (userName : string): Promise<boolean>=>{
+        const user = await UserModel.findOne({userName})
+        return !user;
+      }
+    },
+    message: 'Username already exists'
   },
   password: {
     type: String,
