@@ -72,10 +72,22 @@ const updateUserData = async (req: Request, res: Response) => {
     const userId = req.params.userId
     const userData = req.body
     const result = await userService.updateUserData(userId, userData)
+
+    const ResponsformattedUser = {
+      userId: result?.userId,
+      username: result?.username,
+      fullName: result?.fullName,
+      age: result?.age,
+      email: result?.email,
+      isActive: result?.isActive,
+      hobbies: result?.hobbies,
+      address: result?.address,
+    }
+
     res.status(200).json({
       success: true,
       message: 'User updated successfully!',
-      data: result,
+      data: ResponsformattedUser,
     })
   } catch (error) {
     res.status(500).json({
@@ -137,14 +149,23 @@ const addProductsInUserDB = async (req: Request, res: Response) => {
 }
 
 const retrieveAllOrders = async (req: Request, res: Response) => {
+ try {
   const Userid: string = req.params.userId
-
   const result = await userService.retrieveAllOrders(Userid)
   res.status(200).json({
     success: true,
-    message: ' I am from Retrieve All Orders',
-    data: result,
+    message: 'Order fetched successfully!',
+    data: {
+      oreders: result,
+    },
   })
+ } catch (error) {
+  res.status(500).json({
+    success: false,
+    message: 'Something went worng! from retrieveAllOrders',
+    error: error,
+  })
+ }
 }
 
 const calculateAllOrdersPrice = async (req: Request, res: Response) => {
@@ -176,5 +197,5 @@ export const userContoler = {
   deleteUserData,
   addProductsInUserDB,
   retrieveAllOrders,
-  calculateAllOrdersPrice
+  calculateAllOrdersPrice,
 }

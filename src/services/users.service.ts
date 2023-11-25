@@ -21,7 +21,7 @@ const getAllUsers = async (): Promise<TUserInterface[]> => {
 const getSingleUser = async (
   userID: string,
 ): Promise<TUserInterface | null> => {
-  const result = await UserModel.findById(userID)
+  const result = await UserModel.findById(userID,'userId username fullName age email isActive hobbies address')
   return result
 }
 
