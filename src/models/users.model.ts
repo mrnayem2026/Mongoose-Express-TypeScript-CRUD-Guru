@@ -1,9 +1,12 @@
 import { Schema, model } from 'mongoose'
 import bycrpt from 'bcrypt'
 import config from '../config'
-import { TUserInterface, UserInterFaceModel } from '../interfaces/users.interface'
+import {
+  TUserInterface,
+  UserInterFaceModel,
+} from '../interfaces/users.interface'
 
-const userSchema = new Schema<TUserInterface,UserInterFaceModel>({
+const userSchema = new Schema<TUserInterface, UserInterFaceModel>({
   userId: {
     type: Number,
     unique: true,
@@ -13,13 +16,13 @@ const userSchema = new Schema<TUserInterface,UserInterFaceModel>({
     type: String,
     unique: true,
     required: [true, 'Username is required'],
-    validate:{
-      validator: async (userName : string): Promise<boolean>=>{
-        const user = await UserModel.findOne({userName})
-        return !user;
-      }
+    validate: {
+      validator: async (userName: string): Promise<boolean> => {
+        const user = await UserModel.findOne({ userName })
+        return !user
+      },
     },
-    message: 'Username already exists'
+    message: 'Username already exists',
   },
   password: {
     type: String,
@@ -85,10 +88,10 @@ userSchema.methods.toJSON = function () {
   return userData
 }
 
-userSchema.statics.isUserExist = async function(userId : string)  {
+userSchema.statics.isUserExist = async function (userId: string) {
   const existUser = await UserModel.findById(userId)
   return existUser
 }
-const UserModel = model<TUserInterface,UserInterFaceModel>('User', userSchema)
+const UserModel = model<TUserInterface, UserInterFaceModel>('User', userSchema)
 
 export default UserModel

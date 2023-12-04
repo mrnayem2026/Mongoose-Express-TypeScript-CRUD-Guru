@@ -27,7 +27,6 @@ const getSingleUser = async (
   return result
 }
 
-
 // this below function update user data
 const updateUserData = async (
   userId: string,
@@ -53,12 +52,10 @@ const updateUserData = async (
   }
 }
 
-
 const deleteUserData = async (userId: string) => {
   const deletedData = await UserModel.findByIdAndDelete(userId)
   return deletedData
 }
-
 
 // Add product in Oredes array
 const addProductsInUserDB = async (

@@ -1,15 +1,19 @@
 import { Request, Response } from 'express'
-import userZodSchema from '../zodValidation/users.zod.validation'
+import {
+  createUserZodSchema,
+  updateUserZodSchema,
+} from '../zodValidation/users.zod.validation'
 import { userService } from '../services/users.service'
 import { ZodError } from 'zod'
 import { fromZodError } from 'zod-validation-error'
-
-
+import { TUserInterface } from '../interfaces/users.interface'
 
 const creatUser = async (req: Request, res: Response) => {
   try {
     const userData = req.body
-    const zodParsedData = await userZodSchema.parseAsync(userData)
+
+    const zodParsedData = await createUserZodSchema.parseAsync(userData)
+
     const result = await userService.creatUser(zodParsedData)
 
     res.status(200).json({
@@ -63,8 +67,11 @@ const getSingleUser = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng!',
-      error: (error as Error).message,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     })
   }
 }
@@ -73,7 +80,10 @@ const updateUserData = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId
     const userData = req.body
-    const zodParsedData = await userZodSchema.parseAsync(userData)
+
+    const zodParsedData = (await updateUserZodSchema.parseAsync(
+      userData,
+    )) as TUserInterface
     const result = await userService.updateUserData(userId, zodParsedData)
 
     const ResponsformattedUser = {
@@ -95,8 +105,11 @@ const updateUserData = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng! from get single user',
-      error: (error as Error).message,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     })
   }
 }
@@ -114,8 +127,11 @@ const deleteUserData = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng! from deleteUserData',
-      error: (error as Error).message,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     })
   }
 }
@@ -139,14 +155,21 @@ const addProductsInUserDB = async (req: Request, res: Response) => {
     } else {
       res.status(404).json({
         success: false,
-        message: 'User not found or update failed',
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
       })
     }
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng! from addProductsInUserDB',
-      error: (error as Error).message,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     })
   }
 }
@@ -165,8 +188,11 @@ const retrieveAllOrders = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng! from retrieveAllOrders',
-      error: (error as Error).message,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     })
   }
 }
@@ -186,8 +212,11 @@ const calculateAllOrdersPrice = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: 'Something went worng! from calculateAllOrdersPrice',
-      error: (error as Error).message,
+      message: 'User not found',
+      error: {
+        code: 404,
+        description: 'User not found!',
+      },
     })
   }
 }
