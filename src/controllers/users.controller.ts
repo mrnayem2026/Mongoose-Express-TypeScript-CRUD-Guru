@@ -59,7 +59,7 @@ const getAllUsers = async (req: Request, res: Response) => {
 }
 const getSingleUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
+    const { userId } = req.params
     if (!(await UserModel.isUserExist(Number(userId)))) {
       return res.status(500).json({
         success: false,
@@ -77,10 +77,10 @@ const getSingleUser = async (req: Request, res: Response) => {
       message: 'User fetched successfully!',
       data: result,
     })
-  } catch (error :any) {
+  } catch (error: any) {
     res.status(500).json({
       success: false,
-      message: error.message  || 'something went wrong',
+      message: error.message || 'something went wrong',
       error: error,
     })
   }
@@ -90,6 +90,17 @@ const updateUserData = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params
     const userData = req.body
+
+    if (!(await UserModel.isUserExist(Number(userId)))) {
+      return res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      })
+    }
 
     const zodParsedData = (await updateUserZodSchema.parseAsync(
       userData,

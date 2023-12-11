@@ -89,7 +89,7 @@ userSchema.methods.toJSON = function () {
 }
 
 userSchema.statics.isUserExist = async function (userId: number) {
-  const existUser = await UserModel.findOne({userId})
+  const existUser = await UserModel.findOne({ userId })
   return existUser
 }
 
