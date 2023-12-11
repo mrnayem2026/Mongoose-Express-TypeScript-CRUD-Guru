@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-useless-catch */
 import config from '../config'
 import { TUserInterface } from '../interfaces/users.interface'
@@ -59,28 +60,27 @@ const deleteUserData = async (userId: number) => {
 
 // Add product in Oredes array
 const addProductsInUserDB = async (
-  Userid: number,
-  productData: Partial<TUserInterface>,
+  userId: number,
+  updatedUserData: Partial<TUserInterface>
 ) => {
-  const UserExist = await UserModel.findOne({ Userid })
+  const user = await UserModel.findOne({ userId });
 
-  if (!UserExist) {
-    return null
+  if (!user) {
+    return null;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { productName, price, quantity }: any = productData
-  const newOrder = { productName, price, quantity }
+  const { productName, price, quantity }: any = updatedUserData;
+  const newOrder = { productName, price, quantity };
 
-  if (!UserExist.orders) {
-    UserExist.orders = []
+  if (!user.orders) {
+    user.orders = [];
   }
 
-  UserExist.orders.push(newOrder)
+  user.orders.push(newOrder);
+  const updatedUser = await user.save();
 
-  const UpdataUserExistData = await UserExist.save()
-  return UpdataUserExistData
-}
+  return updatedUser;
+};
 
 // Get all orders for a specific user
 const retrieveAllOrders = async (userId: number) => {
