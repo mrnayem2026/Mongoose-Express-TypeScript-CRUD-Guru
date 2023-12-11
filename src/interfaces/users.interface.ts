@@ -24,7 +24,7 @@ interface TUserInterface {
 }
 
 interface UserInterFaceModel extends Model<TUserInterface> {
-  isUserExist(id: string): Promise<TUserInterface | null>
+  isUserExist(id: number): Promise<TUserInterface | null>
 }
 
 export { TUserInterface, UserInterFaceModel }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express'
 import {
   createUserZodSchema,
@@ -7,6 +8,7 @@ import { userService } from '../services/users.service'
 import { ZodError } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 import { TUserInterface } from '../interfaces/users.interface'
+import UserModel from '../models/users.model'
 
 const creatUser = async (req: Request, res: Response) => {
   try {
@@ -57,34 +59,45 @@ const getAllUsers = async (req: Request, res: Response) => {
 }
 const getSingleUser = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId
-    const result = await userService.getSingleUser(userId)
+    const { userId } = req.params;
+    if (!(await UserModel.isUserExist(Number(userId)))) {
+      return res.status(500).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      })
+    }
+    const result = await userService.getSingleUser(Number(userId))
+
     res.status(200).json({
       success: true,
       message: 'User fetched successfully!',
       data: result,
     })
-  } catch (error) {
+  } catch (error :any) {
     res.status(500).json({
       success: false,
-      message: 'User not found',
-      error: {
-        code: 404,
-        description: 'User not found!',
-      },
+      message: error.message  || 'something went wrong',
+      error: error,
     })
   }
 }
 
 const updateUserData = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId
+    const { userId } = req.params
     const userData = req.body
 
     const zodParsedData = (await updateUserZodSchema.parseAsync(
       userData,
     )) as TUserInterface
-    const result = await userService.updateUserData(userId, zodParsedData)
+    const result = await userService.updateUserData(
+      Number(userId),
+      zodParsedData,
+    )
 
     const ResponsformattedUser = {
       userId: result?.userId,
@@ -116,9 +129,9 @@ const updateUserData = async (req: Request, res: Response) => {
 
 const deleteUserData = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId
+    const { userId } = req.params
     // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
-    const result = await userService.deleteUserData(userId)
+    const result = await userService.deleteUserData(Number(userId))
     res.status(200).json({
       success: true,
       message: 'User deleted successfully!',
@@ -138,11 +151,11 @@ const deleteUserData = async (req: Request, res: Response) => {
 
 const addProductsInUserDB = async (req: Request, res: Response) => {
   try {
-    const Userid: string = req.params.userId
+    const { userId } = req.params
     const userAddProductData = req.body
 
     const result = await userService.addProductsInUserDB(
-      Userid,
+      Number(userId),
       userAddProductData,
     )
 
@@ -176,8 +189,8 @@ const addProductsInUserDB = async (req: Request, res: Response) => {
 
 const retrieveAllOrders = async (req: Request, res: Response) => {
   try {
-    const Userid: string = req.params.userId
-    const result = await userService.retrieveAllOrders(Userid)
+    const { userId } = req.params
+    const result = await userService.retrieveAllOrders(Number(userId))
     res.status(200).json({
       success: true,
       message: 'Order fetched successfully!',
@@ -199,8 +212,8 @@ const retrieveAllOrders = async (req: Request, res: Response) => {
 
 const calculateAllOrdersPrice = async (req: Request, res: Response) => {
   try {
-    const userId = req.params.userId
-    const result = await userService.calculateAllOrdersPrice(userId)
+    const { userId } = req.params
+    const result = await userService.calculateAllOrdersPrice(Number(userId))
 
     res.status(200).json({
       success: true,

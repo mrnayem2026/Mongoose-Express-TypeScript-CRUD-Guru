@@ -88,10 +88,11 @@ userSchema.methods.toJSON = function () {
   return userData
 }
 
-userSchema.statics.isUserExist = async function (userId: string) {
-  const existUser = await UserModel.findById(userId)
+userSchema.statics.isUserExist = async function (userId: number) {
+  const existUser = await UserModel.findOne({userId})
   return existUser
 }
+
 const UserModel = model<TUserInterface, UserInterFaceModel>('User', userSchema)
 
 export default UserModel

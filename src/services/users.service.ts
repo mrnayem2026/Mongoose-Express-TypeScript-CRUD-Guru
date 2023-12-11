@@ -18,10 +18,13 @@ const getAllUsers = async (): Promise<TUserInterface[]> => {
 
 // This function return single user
 const getSingleUser = async (
-  userID: string,
+  userId: number,
 ): Promise<TUserInterface | null> => {
-  const result = await UserModel.findById(
-    userID,
+
+ 
+
+  const result = await UserModel.findOne(
+    {userId},
     'userId username fullName age email isActive hobbies address',
   )
   return result
@@ -29,7 +32,7 @@ const getSingleUser = async (
 
 // this below function update user data
 const updateUserData = async (
-  userId: string,
+  userId: number,
   userData: TUserInterface,
 ): Promise<TUserInterface | null> => {
   try {
@@ -42,7 +45,7 @@ const updateUserData = async (
       )
     }
 
-    const result = await UserModel.findByIdAndUpdate(userId, userData, {
+    const result = await UserModel.findOneAndUpdate({userId}, userData, {
       new: true,
       runValidators: true,
     })
@@ -52,17 +55,17 @@ const updateUserData = async (
   }
 }
 
-const deleteUserData = async (userId: string) => {
-  const deletedData = await UserModel.findByIdAndDelete(userId)
+const deleteUserData = async (userId: number) => {
+  const deletedData = await UserModel.findOneAndDelete({userId})
   return deletedData
 }
 
 // Add product in Oredes array
 const addProductsInUserDB = async (
-  Userid: string,
+  Userid: number,
   productData: Partial<TUserInterface>,
 ) => {
-  const UserExist = await UserModel.findById(Userid)
+  const UserExist = await UserModel.findOne({Userid})
 
   if (!UserExist) {
     return null
@@ -83,14 +86,14 @@ const addProductsInUserDB = async (
 }
 
 // Get all orders for a specific user
-const retrieveAllOrders = async (userId: string) => {
-  const userExistOrders = await UserModel.findById(userId)
+const retrieveAllOrders = async (userId: number) => {
+  const userExistOrders = await UserModel.findOne({userId})
   return userExistOrders?.orders || null
 }
 
 // Get All order price for a specific user
-const calculateAllOrdersPrice = async (userId: string) => {
-  const userExistOrders = await UserModel.findById(userId)
+const calculateAllOrdersPrice = async (userId: number) => {
+  const userExistOrders = await UserModel.findOne({userId})
   const ordersOfUser = userExistOrders?.orders || []
 
   let totalPrice = 0
